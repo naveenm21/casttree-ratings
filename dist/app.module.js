@@ -11,23 +11,19 @@ const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const mongoose_1 = require("@nestjs/mongoose");
-const config_1 = require("@nestjs/config");
+const axios_1 = require("@nestjs/axios");
+const schedule_module_1 = require("@nestjs/schedule/dist/schedule.module");
+const ratings_module_1 = require("./ratings/ratings.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forRootAsync({
-                imports: [config_1.ConfigModule],
-                useFactory: async (config) => {
-                    console.log("db url", config.get("DB_URL"));
-                    return {
-                        uri: config.get("DB_URL"),
-                    };
-                },
-                inject: [config_1.ConfigService],
-            }),
+            axios_1.HttpModule,
+            schedule_module_1.ScheduleModule.forRoot(),
+            mongoose_1.MongooseModule.forRoot('mongodb+srv://dbAdmin:umP6QgRUxgPkK7kd@tecxprt.qbxr7.mongodb.net/tecxprt?authSource=admin&replicaSet=atlas-m6ccdd-shard-0&readPreference=primary&ssl=true'),
+            ratings_module_1.RatingsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
