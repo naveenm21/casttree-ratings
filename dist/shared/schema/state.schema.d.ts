@@ -13,18 +13,18 @@ export declare const StateSchema: mongoose.Schema<any, mongoose.Model<any, any, 
         updatedAt: string;
     };
 }, {} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
     state_name?: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
     state_name?: string;
 }>> & mongoose.FlatRecord<{} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
     state_name?: string;
 }> & {

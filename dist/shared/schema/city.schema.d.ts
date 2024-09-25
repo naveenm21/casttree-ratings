@@ -16,24 +16,24 @@ export declare const CitySchema: mongoose.Schema<any, mongoose.Model<any, any, a
         updatedAt: string;
     };
 }, {} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
-    state?: mongoose.Types.ObjectId;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
+    state?: mongoose.Types.ObjectId;
     city_id?: string;
     city_name?: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
-    state?: mongoose.Types.ObjectId;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
+    state?: mongoose.Types.ObjectId;
     city_id?: string;
     city_name?: string;
 }>> & mongoose.FlatRecord<{} & {
-    country?: mongoose.Types.ObjectId;
     country_id?: string;
-    state?: mongoose.Types.ObjectId;
+    country?: mongoose.Types.ObjectId;
     state_id?: string;
+    state?: mongoose.Types.ObjectId;
     city_id?: string;
     city_name?: string;
 }> & {
