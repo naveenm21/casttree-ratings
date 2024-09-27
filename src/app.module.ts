@@ -9,17 +9,52 @@ import { ScheduleModule } from '@nestjs/schedule/dist/schedule.module';
 
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RatingsModule } from './ratings/ratings.module';
+import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
+import { HelperModule } from './helper/helper.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerBehindProxyGuard } from './auth/guard/throttle-behind-proxy.guard';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: config.get("THROTTLE_TTL"),
+          limit: config.get("THROTTLE_LIMIT"),
+        },
+      ],
+    }),
     HttpModule,
     ScheduleModule.forRoot(),
     MongooseModule.forRoot('mongodb+srv://dbAdmin:umP6QgRUxgPkK7kd@tecxprt.qbxr7.mongodb.net/tecxprt?authSource=admin&replicaSet=atlas-m6ccdd-shard-0&readPreference=primary&ssl=true'),
-    RatingsModule
- ],
+    RatingsModule,
+    SharedModule, AuthModule, HelperModule,
+    EventEmitterModule.forRoot(),
+    /*MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => {
+        console.log("db url", config.get("DB_URL"));
+        return {
+          uri: config.get("DB_URL"),
+        };
+      },
+      inject: [ConfigService],
+    }),*/
+  ],
   controllers: [AppController],
-  providers: [AppService],
-  
+
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
+    },
+  ],
+
 })
-export class AppModule {}
+export class AppModule { }

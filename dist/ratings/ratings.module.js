@@ -12,6 +12,8 @@ const ratings_controller_1 = require("./ratings.controller");
 const ratings_service_1 = require("./ratings.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const ratings_schema_1 = require("./schema/ratings-schema");
+const auth_module_1 = require("../auth/auth.module");
+const helper_module_1 = require("../helper/helper.module");
 let RatingsModule = class RatingsModule {
 };
 exports.RatingsModule = RatingsModule;
@@ -27,6 +29,8 @@ exports.RatingsModule = RatingsModule = __decorate([
                     schema: ratings_schema_1.ratingAggregatedSchema
                 }
             ]),
+            auth_module_1.AuthModule,
+            helper_module_1.HelperModule,
         ],
         controllers: [ratings_controller_1.RatingsController],
         providers: [ratings_service_1.RatingsService],

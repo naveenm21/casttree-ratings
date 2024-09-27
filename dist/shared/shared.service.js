@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TypeMapping = exports.activity_icon = exports.app_variables = exports.app_report_key = exports.app_date_ranges = exports.SharedService = void 0;
 const common_1 = require("@nestjs/common");
@@ -384,7 +383,9 @@ exports.SharedService = SharedService = __decorate([
     __param(1, (0, mongoose_1.InjectModel)("commandSource")),
     __metadata("design:paramtypes", [mongoose_2.Model,
         mongoose_2.Model,
-        config_1.ConfigService, typeof (_a = typeof event_emitter_1.EventEmitter2 !== "undefined" && event_emitter_1.EventEmitter2) === "function" ? _a : Object, currency_service_1.CurrencyService])
+        config_1.ConfigService,
+        event_emitter_1.EventEmitter2,
+        currency_service_1.CurrencyService])
 ], SharedService);
 var app_date_ranges;
 (function (app_date_ranges) {
