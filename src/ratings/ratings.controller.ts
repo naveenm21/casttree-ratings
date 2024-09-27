@@ -35,10 +35,29 @@ export class RatingsController {
   async getRatingsAggregateList(
  
     @Body(new ValidationPipe({ whitelist: true })) body: any,
-    @Res() res: Response
+  
   ) {
     try {
       let data :any = await this.ratingsService.getRatingsAggregateList(body);
+      console.log(data);
+      return data;
+
+    } catch (err) {
+        throw err;
+    }
+  }
+
+
+  @Post("getRatingSummary")
+  async getRatingSummary(
+ 
+    @Body(new ValidationPipe({ whitelist: true })) body: any,
+  
+  ) {
+    try {
+      let data :any = await this.ratingsService.getReviewSummary(body.sourceType,body.sourceId);
+      console.log(data);
+      return data;
 
     } catch (err) {
         throw err;

@@ -19,14 +19,15 @@ exports.RatingsModule = RatingsModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature([
                 {
-                    name: "Ratingsv1",
+                    name: "ratings",
                     schema: ratings_schema_1.ratingSchema
                 },
                 {
-                    name: "Ratingsaggregated",
-                    schema: ratings_schema_1.ratingaggregatedSchema
+                    name: "ratingsAggregated",
+                    schema: ratings_schema_1.ratingAggregatedSchema
                 }
-            ]),],
+            ]),
+        ],
         controllers: [ratings_controller_1.RatingsController],
         providers: [ratings_service_1.RatingsService],
         exports: [ratings_service_1.RatingsService],

@@ -1,15 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ratingaggregatedSchema = exports.ratingSchema = void 0;
+exports.ratingAggregatedSchema = exports.ratingSchema = void 0;
 const mongoose_1 = require("mongoose");
 exports.ratingSchema = new mongoose_1.default.Schema({
     sourceId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "serviceitems",
-    },
-    userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "user",
+        type: String
     },
     sourceType: {
         type: String,
@@ -37,19 +32,21 @@ exports.ratingSchema = new mongoose_1.default.Schema({
         type: String,
     }
 }, {
-    collection: "Ratingsv1",
+    collection: "ratings",
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
 });
-exports.ratingaggregatedSchema = new mongoose_1.default.Schema({
+exports.ratingAggregatedSchema = new mongoose_1.default.Schema({
     sourceId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "user",
+        type: String
     },
     sourceType: {
         type: String,
     },
     scale: {
         type: Number,
+    },
+    finalAverageRating: {
+        type: Number
     },
     averageOverallRating: {
         type: Number,

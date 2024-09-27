@@ -29,9 +29,21 @@ let RatingsController = class RatingsController {
     getAllReviews(sourceType, sourceId, skip, limit, req) {
         return this.ratingsService.getAllReviews(sourceType, sourceId, skip, limit, req["headers"]["authorization"]);
     }
-    async getRatingsAggregateList(body, res) {
+    async getRatingsAggregateList(body) {
         try {
             let data = await this.ratingsService.getRatingsAggregateList(body);
+            console.log(data);
+            return data;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+    async getRatingSummary(body) {
+        try {
+            let data = await this.ratingsService.getReviewSummary(body.sourceType, body.sourceId);
+            console.log(data);
+            return data;
         }
         catch (err) {
             throw err;
@@ -71,11 +83,17 @@ __decorate([
 __decorate([
     (0, common_1.Post)("get-aggregate-list"),
     __param(0, (0, common_1.Body)(new common_1.ValidationPipe({ whitelist: true }))),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Response]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], RatingsController.prototype, "getRatingsAggregateList", null);
+__decorate([
+    (0, common_1.Post)("getRatingSummary"),
+    __param(0, (0, common_1.Body)(new common_1.ValidationPipe({ whitelist: true }))),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], RatingsController.prototype, "getRatingSummary", null);
 exports.RatingsController = RatingsController = __decorate([
     (0, common_1.Controller)('ratings'),
     __metadata("design:paramtypes", [ratings_service_1.RatingsService])

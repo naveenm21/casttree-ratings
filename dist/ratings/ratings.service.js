@@ -16,17 +16,17 @@ exports.RatingsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const mongodb_1 = require("mongodb");
 let RatingsService = class RatingsService {
-    constructor(ratingModel, aggregatedratingModel) {
+    constructor(ratingModel, aggregatedModel) {
         this.ratingModel = ratingModel;
-        this.aggregatedratingModel = aggregatedratingModel;
+        this.aggregatedModel = aggregatedModel;
     }
     async createRating(body) {
         try {
             const isNotFirst = await this.ratingModel.findOne({
-                sourceId: body.sourceId
+                sourceType: body.sourceType, sourceId: body.sourceId
             });
+            console.log(isNotFirst);
             const newRating = new this.ratingModel(body);
             const insertedRating = await newRating.save();
             if (isNotFirst == null) {
@@ -34,21 +34,23 @@ let RatingsService = class RatingsService {
                     sourceId: body.sourceId,
                     sourceType: body.sourceType,
                     averageOverallRating: body.overAllRating,
+                    finalAverageRating: body.overAllRating,
                     scale: body.scale,
                     totalReviewNumber: 1
                 };
-                const newAggregatedRating = new this.aggregatedratingModel(aggregatedBody);
-                return newAggregatedRating.save();
+                const newAggregatedRating = new this.aggregatedModel(aggregatedBody);
+                newAggregatedRating.save();
+                return { message: "success" };
             }
             else {
-                const oldAggregated = await this.aggregatedratingModel.findOne({
+                const oldAggregated = await this.aggregatedModel.findOne({
                     sourceId: body.sourceId
                 });
-                console.log(oldAggregated);
                 const oldAverage = oldAggregated.averageOverallRating;
                 const oldCount = oldAggregated.totalReviewNumber;
                 const newAverage = (oldAverage + body.overAllRating);
-                return this.aggregatedratingModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1) });
+                const newFinalAverage = parseFloat((newAverage / (oldCount + 1)).toString().substring(0, 3));
+                return this.aggregatedModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1), finalAverageRating: newFinalAverage });
             }
         }
         catch (err) {
@@ -56,12 +58,13 @@ let RatingsService = class RatingsService {
         }
     }
     async getReviewSummary(sourceType, sourceId, accessToken) {
+        console.log(sourceId, sourceType);
         try {
             let allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).limit(10)
                 .lean();
-            let aggregated = await this.aggregatedratingModel.findOne({
+            let aggregated = await this.aggregatedModel.findOne({
                 sourceId: sourceId, sourceType: sourceType
             }).lean();
             const count = await this.ratingModel.countDocuments({
@@ -98,8 +101,11 @@ let RatingsService = class RatingsService {
             let aggregation_pipeline = [];
             let filter = {};
             if (body.sourceIds) {
-                let sourceIds = body.sourceIds.map((e) => new mongodb_1.ObjectId(e));
+                let sourceIds = body.sourceIds.map((e) => e);
                 filter = { sourceId: { $in: sourceIds } };
+            }
+            if (body.sourceType) {
+                filter.sourceType = body.sourceType;
             }
             aggregation_pipeline.push({
                 $match: filter,
@@ -108,7 +114,7 @@ let RatingsService = class RatingsService {
                 $project: {
                     sourceId: "$sourceId",
                     totalReviews: "$totalReviewNumber",
-                    averageReview: "$averageOverallRating"
+                    averageReview: "$finalAverageRating"
                 },
             });
             let countPipe = [...aggregation_pipeline];
@@ -123,14 +129,12 @@ let RatingsService = class RatingsService {
                     count: { $sum: 1 },
                 },
             });
-            let ratingData = await this.aggregatedratingModel.aggregate(aggregation_pipeline);
-            let total_count = await this.aggregatedratingModel.aggregate(countPipe);
+            let ratingData = await this.aggregatedModel.aggregate(aggregation_pipeline);
+            let total_count = await this.aggregatedModel.aggregate(countPipe);
             let count;
             if (total_count.length) {
                 count = total_count[0].count;
             }
-            console.log(ratingData);
-            console.log(count);
             return { ratingData, count };
         }
         catch (err) {
@@ -141,8 +145,8 @@ let RatingsService = class RatingsService {
 exports.RatingsService = RatingsService;
 exports.RatingsService = RatingsService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)("Ratingsv1")),
-    __param(1, (0, mongoose_1.InjectModel)("Ratingsaggregated")),
+    __param(0, (0, mongoose_1.InjectModel)("ratings")),
+    __param(1, (0, mongoose_1.InjectModel)("ratingsAggregated")),
     __metadata("design:paramtypes", [mongoose_2.Model,
         mongoose_2.Model])
 ], RatingsService);

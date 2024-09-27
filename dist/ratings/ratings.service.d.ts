@@ -1,14 +1,16 @@
-import { Ratingsaggregated, Ratingsv1 } from './schema/ratings-schema';
+import { ratingsAggregated, ratings } from './schema/ratings-schema';
 import { Model } from 'mongoose';
 import { createRatingsDto } from './dto/createRating.dto';
 export declare class RatingsService {
     private ratingModel;
-    private aggregatedratingModel;
-    constructor(ratingModel: Model<Ratingsv1>, aggregatedratingModel: Model<Ratingsaggregated>);
-    createRating(body: createRatingsDto): Promise<import("mongoose").Document<unknown, {}, Ratingsaggregated> & Ratingsaggregated & {
+    private aggregatedModel;
+    constructor(ratingModel: Model<ratings>, aggregatedModel: Model<ratingsAggregated>);
+    createRating(body: createRatingsDto): Promise<(import("mongoose").Document<unknown, {}, ratingsAggregated> & ratingsAggregated & {
         _id: import("mongoose").Types.ObjectId;
+    }) | {
+        message: string;
     }>;
-    getReviewSummary(sourceType: string, sourceId: string, accessToken: string): Promise<{
+    getReviewSummary(sourceType: string, sourceId: string, accessToken?: string): Promise<{
         data: {
             [key: string]: string;
         };

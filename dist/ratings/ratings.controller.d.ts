@@ -3,8 +3,10 @@ import { RatingsService } from './ratings.service';
 export declare class RatingsController {
     private ratingsService;
     constructor(ratingsService: RatingsService);
-    createRating(createratingdto: createRatingsDto): Promise<import("mongoose").Document<unknown, {}, import("./schema/ratings-schema").Ratingsaggregated> & import("./schema/ratings-schema").Ratingsaggregated & {
+    createRating(createratingdto: createRatingsDto): Promise<(import("mongoose").Document<unknown, {}, import("./schema/ratings-schema").ratingsAggregated> & import("./schema/ratings-schema").ratingsAggregated & {
         _id: import("mongoose").Types.ObjectId;
+    }) | {
+        message: string;
     }>;
     getUserAggregated(sourceType: string, sourceId: string, req: any): Promise<{
         data: {
@@ -16,5 +18,6 @@ export declare class RatingsController {
         data: any;
         count: number;
     }>;
-    getRatingsAggregateList(body: any, res: Response): Promise<void>;
+    getRatingsAggregateList(body: any): Promise<any>;
+    getRatingSummary(body: any): Promise<any>;
 }

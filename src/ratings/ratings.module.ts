@@ -2,20 +2,24 @@ import { Module } from '@nestjs/common';
 import { RatingsController } from './ratings.controller';
 import { RatingsService } from './ratings.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ratingaggregatedSchema, ratingSchema } from './schema/ratings-schema';
+import { ratingAggregatedSchema, ratingSchema } from './schema/ratings-schema';
+
 
 
 @Module({
   imports: [MongooseModule.forFeature([
     {
-      name: "Ratingsv1",
+      name: "ratings",
       schema: ratingSchema
     }
     , {
-      name: "Ratingsaggregated",
-      schema: ratingaggregatedSchema
+      name: "ratingsAggregated",
+      schema: ratingAggregatedSchema
     }
-  ]),],
+  ]),
+
+
+],
   controllers: [RatingsController],
   providers: [RatingsService],
   exports:[RatingsService],

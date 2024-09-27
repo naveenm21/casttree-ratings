@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
-export interface Ratingsv1 {
+export interface ratings {
 
   sourceId: string;
 
@@ -26,11 +26,13 @@ export interface Ratingsv1 {
 
   updatedBy: string;
 }
-export interface Ratingsaggregated {
-  
+export interface ratingsAggregated {
+
   sourceId: string;
 
   sourceType: string;
+
+  finalAverageRating: Number;
 
   averageOverallRating: Number;
 
@@ -40,14 +42,9 @@ export interface Ratingsaggregated {
 }
 export const ratingSchema = new mongoose.Schema<any>({
   sourceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "serviceitems",
+    type: String
   },
 
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-  },
   sourceType: {
     type: String,
   },
@@ -67,7 +64,6 @@ export const ratingSchema = new mongoose.Schema<any>({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-
   createdBy: {
     type: String,
   },
@@ -77,20 +73,24 @@ export const ratingSchema = new mongoose.Schema<any>({
 }
   ,
   {
-    collection: "Ratingsv1",
+    collection: "ratings",
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
   });
-export const ratingaggregatedSchema = new mongoose.Schema<any>({
+export const ratingAggregatedSchema = new mongoose.Schema<any>({
   sourceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
+    type: String
   },
+
   sourceType: {
     type: String,
   },
 
   scale: {
     type: Number,
+  },
+
+  finalAverageRating: {
+    type: Number
   },
   averageOverallRating: {
     type: Number,

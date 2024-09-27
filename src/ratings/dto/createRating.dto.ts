@@ -2,7 +2,7 @@ import { IsMongoId, IsNotEmpty, IsString } from "class-validator";
 
 export class createRatingsDto {
     @IsNotEmpty()
-    @IsMongoId()
+    @IsString()
     sourceId: string;
 
     @IsNotEmpty()

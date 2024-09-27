@@ -16,7 +16,7 @@ class createRatingsDto {
 exports.createRatingsDto = createRatingsDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsMongoId)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], createRatingsDto.prototype, "sourceId", void 0);
 __decorate([

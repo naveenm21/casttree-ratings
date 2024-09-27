@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-export interface Ratingsv1 {
+export interface ratings {
     sourceId: string;
     userId: string;
     sourceType: string;
@@ -13,9 +13,10 @@ export interface Ratingsv1 {
     createdBy: string;
     updatedBy: string;
 }
-export interface Ratingsaggregated {
+export interface ratingsAggregated {
     sourceId: string;
     sourceType: string;
+    finalAverageRating: Number;
     averageOverallRating: Number;
     scale: Number;
     totalReviewNumber: Number;
@@ -29,7 +30,7 @@ export declare const ratingSchema: mongoose.Schema<any, mongoose.Model<any, any,
 }> & Required<{
     _id: unknown;
 }>>;
-export declare const ratingaggregatedSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
+export declare const ratingAggregatedSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
     [x: string]: unknown;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     [x: string]: unknown;
