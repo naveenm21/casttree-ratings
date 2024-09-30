@@ -32,11 +32,11 @@ import { ThrottlerBehindProxyGuard } from './auth/guard/throttle-behind-proxy.gu
     }),
     HttpModule,
     ScheduleModule.forRoot(),
-    MongooseModule.forRoot('mongodb+srv://dbAdmin:umP6QgRUxgPkK7kd@tecxprt.qbxr7.mongodb.net/tecxprt?authSource=admin&replicaSet=atlas-m6ccdd-shard-0&readPreference=primary&ssl=true'),
+
     RatingsModule,
     SharedModule, AuthModule, HelperModule,
     EventEmitterModule.forRoot(),
-    /*MongooseModule.forRootAsync({
+    MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => {
         console.log("db url", config.get("DB_URL"));
@@ -45,9 +45,9 @@ import { ThrottlerBehindProxyGuard } from './auth/guard/throttle-behind-proxy.gu
         };
       },
       inject: [ConfigService],
-    }),*/
+    }),
   ],
-  controllers: [AppController],
+  controllers: [],
 
   providers: [
     {

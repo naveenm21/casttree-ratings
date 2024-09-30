@@ -4,6 +4,7 @@ import { ratingsAggregated, ratings } from './schema/ratings-schema';
 import { Model } from 'mongoose';
 import { createRatingsDto } from './dto/createRating.dto';
 import { ObjectId } from 'mongodb';
+import { HelperService } from 'src/helper/helper.service';
 
 
 @Injectable()
@@ -11,6 +12,7 @@ export class RatingsService {
     constructor(
         @InjectModel("ratings") private ratingModel: Model<ratings>,
         @InjectModel("ratingsAggregated") private aggregatedModel: Model<ratingsAggregated>,
+        private helperService: HelperService
    
 
     ) { }
@@ -68,7 +70,8 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-            /*  const profileInfo = await this.helperService.getProfileById(
+            console.log(aggregated);
+              const profileInfo = await this.helperService.getProfileById(
                   [aggregated.sourceId],
                   accessToken,
                   null
@@ -89,7 +92,7 @@ export class RatingsService {
               for (let i = 0; i < allReviews.length; i++) {
                   allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
               }
-  */
+  
             let final_response: { [key: string]: string } = {
                 "aggregated": aggregated,
                 "reviews": allReviews,
@@ -111,7 +114,7 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-            /*const allProfileInfo = await this.helperService.getProfileById(
+            const allProfileInfo = await this.helperService.getProfileById(
                 reviewerUserIds,
                 accessToken,
                 null
@@ -127,7 +130,7 @@ export class RatingsService {
 
             for (let i = 0; i < allReviews.length; i++) {
                 allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
-            }*/
+            }
             return { data: allReviews, count: count };
         } catch (err) {
             throw err;
