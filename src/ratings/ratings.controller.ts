@@ -52,7 +52,7 @@ export class RatingsController {
   async getRatingSummary(
     @Body(new ValidationPipe({ whitelist: true })) body: any, @Req() req) {
     try {
-      let data: any = await this.ratingsService.getReviewSummary(body.sourceType, body.sourceId,req["headers"]["authorization"].toString());
+      let data: any = await this.ratingsService.getReviewSummary(body.sourceType, body.sourceId, req["headers"]["authorization"].toString());
       console.log(data);
       return data;
 
