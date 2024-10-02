@@ -21,14 +21,14 @@ export class HelperService {
     return reqHeaders;
   }
 
-  async getProfileById(userId: string[], accessToken: string , type?: string) {
+  async getProfileById(userId: string[], accessToken: string, type: string) {
     try {
 
 
       let data = await this.http_service
         .post(
           `${this.configService.get("CASTTREE_BASE_URL")}/profile/get-profile-list`,
-          { userIds: userId ,type:type},
+          { userIds: userId, type: type },
           {
             headers: {
               Authorization: accessToken,
@@ -36,53 +36,7 @@ export class HelperService {
           }
         )
         .toPromise();
-      //console.log("data is", data.data.profileData);
-
       return data.data.profileData;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async getRatings(sourceId: string[], sourceType: string) {
-    try {
-
-      let data = await this.http_service
-        .post(
-          `http://localhost:3000/ratings/get-aggregate-list`,
-          { sourceIds: sourceId ,sourceType:sourceType},
-         /* {
-            headers: {
-              Authorization: accessToken,
-            },
-          }*/
-        )
-        .toPromise();
-      //console.log("data is", data.data.profileData);
-
-      return data.data.ratingData;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async getRatingsSummary(sourceId: string, sourceType: string) {
-    try {
-
-      let data = await this.http_service
-        .post(
-          `http://localhost:3000/ratings/getRatingSummary`,
-          { sourceId: sourceId ,sourceType:sourceType},
-         /* {
-            headers: {
-              Authorization: accessToken,
-            },
-          }*/
-        )
-        .toPromise();
-      //console.log("data is", data.data.profileData);
-
-      return data.data;
     } catch (err) {
       throw err;
     }

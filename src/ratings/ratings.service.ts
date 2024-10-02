@@ -13,7 +13,7 @@ export class RatingsService {
         @InjectModel("ratings") private ratingModel: Model<ratings>,
         @InjectModel("ratingsAggregated") private aggregatedModel: Model<ratingsAggregated>,
         private helperService: HelperService
-   
+
 
     ) { }
 
@@ -36,7 +36,7 @@ export class RatingsService {
                 }
                 const newAggregatedRating = new this.aggregatedModel(aggregatedBody);
                 newAggregatedRating.save();
-                return {message:"success"};
+                return { message: "success" };
             }
             else {
                 const oldAggregated: any = await this.aggregatedModel.findOne({
@@ -71,28 +71,28 @@ export class RatingsService {
                 sourceId: sourceId, sourceType: sourceType
             });
             console.log(aggregated);
-              const profileInfo = await this.helperService.getProfileById(
-                  [aggregated.sourceId],
-                  accessToken,
-                  null
-              );
-              aggregated["profileData"] = profileInfo[0];
-              const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
-              const allProfileInfo = await this.helperService.getProfileById(
-                  reviewerUserIds,
-                  accessToken,
-                  null
-              );
-              
-              var userProfileInfo = allProfileInfo.reduce((a, c) => {
-                  a[c.userId] = c;
-                  return a;
-              }, {});
-  
-              for (let i = 0; i < allReviews.length; i++) {
-                  allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
-              }
-  
+            const profileInfo = await this.helperService.getProfileById(
+                [aggregated.sourceId],
+                accessToken,
+                null
+            );
+            aggregated["profileData"] = profileInfo[0];
+            const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
+            const allProfileInfo = await this.helperService.getProfileById(
+                reviewerUserIds,
+                accessToken,
+                null
+            );
+
+            var userProfileInfo = allProfileInfo.reduce((a, c) => {
+                a[c.userId] = c;
+                return a;
+            }, {});
+            console.log(userProfileInfo);
+            for (let i = 0; i < allReviews.length; i++) {
+                allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
+            }
+
             let final_response: { [key: string]: string } = {
                 "aggregated": aggregated,
                 "reviews": allReviews,
@@ -119,10 +119,6 @@ export class RatingsService {
                 accessToken,
                 null
             );
-
-            
-
-
             var userProfileInfo = allProfileInfo.reduce((a, c) => {
                 a[c.userId] = c;
                 return a;

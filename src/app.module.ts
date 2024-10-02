@@ -5,8 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule/dist/schedule.module';
-
-
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RatingsModule } from './ratings/ratings.module';
 import { SharedModule } from './shared/shared.module';
@@ -32,9 +30,10 @@ import { ThrottlerBehindProxyGuard } from './auth/guard/throttle-behind-proxy.gu
     }),
     HttpModule,
     ScheduleModule.forRoot(),
-
     RatingsModule,
-    SharedModule, AuthModule, HelperModule,
+    SharedModule,
+    AuthModule,
+    HelperModule,
     EventEmitterModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
