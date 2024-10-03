@@ -7,7 +7,7 @@ export class HelperService {
   constructor(
     private http_service: HttpService,
     private configService: ConfigService
-  ) { }
+  ) {}
 
   getRequiredHeaders(@Req() req) {
     const reqHeaders = {
@@ -23,8 +23,6 @@ export class HelperService {
 
   async getProfileById(userId: string[], accessToken: string, type: string) {
     try {
-
-
       let data = await this.http_service
         .post(
           `${this.configService.get("CASTTREE_BASE_URL")}/profile/get-profile-list`,
@@ -37,28 +35,6 @@ export class HelperService {
         )
         .toPromise();
       return data.data.profileData;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async updateNominationStatus(body) {
-    try {
-      // console.log("body is", body);
-
-      let data = await this.http_service
-        .patch(
-          `${this.configService.get("CASTTREE_BASE_URL")}/nominations`,
-          body,
-          {
-            headers: {
-              Authorization: `${body.token}`,
-            },
-          }
-        )
-        .toPromise();
-
-      return data.data;
     } catch (err) {
       throw err;
     }
