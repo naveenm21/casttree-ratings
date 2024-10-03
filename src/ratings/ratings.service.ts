@@ -13,9 +13,7 @@ export class RatingsService {
         @InjectModel("ratings") private ratingModel: Model<ratings>,
         @InjectModel("ratingsAggregated") private aggregatedModel: Model<ratingsAggregated>,
         private helperService: HelperService
-
-
-    ) { }
+     ) { }
 
     async createRating(body: createRatingsDto) {
         try {
