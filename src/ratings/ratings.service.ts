@@ -21,7 +21,7 @@ export class RatingsService {
             const isNotFirst = await this.ratingModel.findOne({
                 sourceType: body.sourceType, sourceId: body.sourceId
             });
-            console.log(isNotFirst)
+
             body.reviewedBy = token.id;
             const newRating = new this.ratingModel(body)
             const insertedRating = await newRating.save();
