@@ -2,17 +2,20 @@ import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req, Res, UseG
 import { createRatingsDto } from './dto/createRating.dto';
 import { RatingsService } from './ratings.service';
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
+import { GetToken } from 'src/shared/decorator/getuser.decorator';
+import { UserToken } from 'src/auth/dto/usertoken.dto';
 
 @Controller('ratings')
 export class RatingsController {
   constructor(private ratingsService: RatingsService) {
 
   }
+
   @UseGuards(JwtAuthGuard)
   @Post()
-  createRating(@Body(new ValidationPipe({ whitelist: true })) createratingdto: createRatingsDto) {
+  createRating(@Body(new ValidationPipe({ whitelist: true })) createratingdto: createRatingsDto,  @GetToken() token: UserToken,) {
 
-    return this.ratingsService.createRating(createratingdto);
+    return this.ratingsService.createRating(createratingdto,token);
   }
 
   @UseGuards(JwtAuthGuard)
