@@ -18,7 +18,7 @@ export class createRatingsDto {
     @IsNotEmpty()
     overAllDescription: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     status: string;
 
     @IsOptional()

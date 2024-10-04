@@ -6,6 +6,7 @@ import { createRatingsDto } from './dto/createRating.dto';
 import { ObjectId } from 'mongodb';
 import { HelperService } from 'src/helper/helper.service';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
+import { EratingStatus, ESratingStatus } from './enum/rating_status.enum';
 
 
 @Injectable()
@@ -18,14 +19,15 @@ export class RatingsService {
 
     async createRating(body: createRatingsDto, token: UserToken) {
         try {
-            const isNotFirst = await this.ratingModel.findOne({
+            const oldRating = await this.ratingModel.findOne({
                 sourceType: body.sourceType, sourceId: body.sourceId
             });
 
             body.reviewedBy = token.id;
+            body.status = EratingStatus.active;
             const newRating = new this.ratingModel(body)
             const insertedRating = await newRating.save();
-            if (isNotFirst == null) {
+            if (oldRating == null) {
                 const aggregatedBody = {
                     sourceId: body.sourceId,
                     sourceType: body.sourceType,
@@ -46,7 +48,8 @@ export class RatingsService {
                 const oldAverage = oldAggregated.averageOverallRating;
                 const oldCount = oldAggregated.totalReviewNumber;
                 const newAverage = (oldAverage + body.overAllRating);
-                const newFinalAverage = parseFloat((newAverage / (oldCount + 1)).toString().substring(0, 3));
+                const newFinalAverage = (newAverage / (oldCount + 1)).toFixed(1);
+
 
                 return this.aggregatedModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1), finalAverageRating: newFinalAverage });
             }
