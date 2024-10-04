@@ -1,4 +1,4 @@
-import { IsMongoId, IsNotEmpty, IsString } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class createRatingsDto {
     @IsNotEmpty()
@@ -21,7 +21,7 @@ export class createRatingsDto {
     @IsNotEmpty()
     status: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsMongoId()
     reviewedBy: string;
 

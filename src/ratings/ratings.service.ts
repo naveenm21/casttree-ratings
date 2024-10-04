@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { createRatingsDto } from './dto/createRating.dto';
 import { ObjectId } from 'mongodb';
 import { HelperService } from 'src/helper/helper.service';
+import { UserToken } from 'src/auth/dto/usertoken.dto';
 
 
 @Injectable()
@@ -15,12 +16,13 @@ export class RatingsService {
         private helperService: HelperService
      ) { }
 
-    async createRating(body: createRatingsDto) {
+    async createRating(body: createRatingsDto, token: UserToken) {
         try {
             const isNotFirst = await this.ratingModel.findOne({
                 sourceType: body.sourceType, sourceId: body.sourceId
             });
-            console.log(isNotFirst)
+
+            body.reviewedBy = token.id;
             const newRating = new this.ratingModel(body)
             const insertedRating = await newRating.save();
             if (isNotFirst == null) {
