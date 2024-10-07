@@ -1,4 +1,5 @@
-import { IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { EtransactionType } from "../enum/transactionType.enum";
 
 export class createRatingsDto {
     @IsNotEmpty()
@@ -15,7 +16,8 @@ export class createRatingsDto {
 
     @IsNotEmpty()
     @IsString()
-    transactionType: string;
+    @IsEnum( EtransactionType)
+    transactionType: EtransactionType;
 
     @IsNotEmpty()
     overAllRating: number;
