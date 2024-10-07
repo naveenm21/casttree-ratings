@@ -15,7 +15,7 @@ export class RatingsService {
         @InjectModel("ratings") private ratingModel: Model<ratings>,
         @InjectModel("ratingsAggregated") private aggregatedModel: Model<ratingsAggregated>,
         private helperService: HelperService
-     ) { }
+    ) { }
 
     async createRating(body: createRatingsDto, token: UserToken) {
         try {
@@ -184,5 +184,12 @@ export class RatingsService {
         } catch (err) {
             throw err;
         }
+    }
+
+    async getRating(transactionId, transactionType, token: UserToken) {
+        const ratingData = await this.ratingModel.findOne({
+            transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
+        });
+        return ratingData;
     }
 }
