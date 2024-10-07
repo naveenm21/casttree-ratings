@@ -10,6 +10,14 @@ export class createRatingsDto {
     sourceType: string;
 
     @IsNotEmpty()
+    @IsString()
+    transactionId: string;
+
+    @IsNotEmpty()
+    @IsString()
+    transactionType: string;
+
+    @IsNotEmpty()
     overAllRating: number;
 
     @IsNotEmpty()

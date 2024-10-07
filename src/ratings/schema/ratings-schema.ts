@@ -4,7 +4,9 @@ export interface ratings {
 
   sourceId: string;
 
-  userId: string;
+  transactionId: string;
+
+  transactionType: string;
 
   sourceType: string;
 
@@ -48,6 +50,14 @@ export const ratingSchema = new mongoose.Schema<any>({
   sourceType: {
     type: String,
   },
+  transactionId: {
+    type: String
+  },
+
+  transactionType: {
+    type: String
+  },
+
   overAllRating: {
     type: Number,
   },
