@@ -4,6 +4,7 @@ import { RatingsService } from './ratings.service';
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { GetToken } from 'src/shared/decorator/getuser.decorator';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
+import { EtransactionType } from './enum/transactionType.enum';
 
 @Controller('ratings')
 export class RatingsController {
@@ -53,7 +54,7 @@ export class RatingsController {
   @UseGuards(JwtAuthGuard)
   @Get(':transactionId/:transactionType')
   @UsePipes(new ValidationPipe())
-  getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: string, @Req() req, @GetToken() token: UserToken) {
+  getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: EtransactionType, @Req() req, @GetToken() token: UserToken) {
     return this.ratingsService.getRating(transactionId, transactionType, token);
   }
 
