@@ -186,9 +186,9 @@ export class RatingsService {
         }
     }
 
-    async getRating(transactionId, transactionType) {
+    async getRating(transactionId, transactionType, token: UserToken) {
         const ratingData = await this.ratingModel.findOne({
-            transactionId: transactionId, transactionType: transactionType
+            transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
         });
         return ratingData;
     }

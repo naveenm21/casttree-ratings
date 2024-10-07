@@ -53,8 +53,8 @@ export class RatingsController {
   @UseGuards(JwtAuthGuard)
   @Get(':transactionId/:transactionType')
   @UsePipes(new ValidationPipe())
-  getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: string) {
-    return this.ratingsService.getRating(transactionId, transactionType);
+  getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: string, @Req() req, @GetToken() token: UserToken) {
+    return this.ratingsService.getRating(transactionId, transactionType, token);
   }
 
   
