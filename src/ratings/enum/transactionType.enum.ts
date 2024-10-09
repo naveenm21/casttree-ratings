@@ -1,6 +1,6 @@
 export enum EtransactionType {
   
-    serviceRequest = "serviceRequest",
+    serviceRequest = "serviceRequest"
   
   }
 export const EStransactionType = [

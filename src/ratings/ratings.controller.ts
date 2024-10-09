@@ -5,18 +5,73 @@ import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { GetToken } from 'src/shared/decorator/getuser.decorator';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
 import { EtransactionType } from './enum/transactionType.enum';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 
 @Controller('ratings')
+@ApiTags('Ratings Module')
 export class RatingsController {
   constructor(private ratingsService: RatingsService) {
 
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: "This api is used to create ratings for an item" })
+  @ApiBearerAuth()
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        sourceId: {
+          type: 'string',
+          example: '66ebe84b9a3569c333693e46',
+          description: 'Mongo Id of the item for which user is rating'
+        },
+        sourceType: {
+          type: 'string',
+          example: 'serviceItem',
+          description: 'Type of the service for which user is rating'
+        },
+        transactionId: {
+          type: 'string',
+          example: '66ebe84b9a3569c333693e46',
+          description: 'Mongo Id of the response for which user is rating'
+        },
+        transactionType: {
+          type: 'string',
+          example: 'serviceRequest',
+          description: 'Type of the response for which user is rating'
+        },
+        overAllRating: {
+          type: 'number',
+          example: '5',
+          description: 'Rating given for that service'
+        },
+        scale: {
+          type: 'number',
+          example: '5',
+          description: 'Maximum rating that can be given for that service'
+        },
+        overAllDescription: {
+          type: 'string',
+          example: 'Good response and indepth analysis',
+          description: 'description about the experience of the service '
+        },
+      }
+    }
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Rating created successfully'
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Please concatinate casttree-ratings to base url'
+  })
   @Post()
-  createRating(@Body(new ValidationPipe({ whitelist: true })) createratingdto: createRatingsDto,  @GetToken() token: UserToken,) {
+  createRating(@Body(new ValidationPipe({ whitelist: true })) createratingdto: createRatingsDto, @GetToken() token: UserToken,) {
 
-    return this.ratingsService.createRating(createratingdto,token);
+    return this.ratingsService.createRating(createratingdto, token);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -50,7 +105,6 @@ export class RatingsController {
     }
   }
 
-
   @UseGuards(JwtAuthGuard)
   @Get(':transactionId/:transactionType')
   @UsePipes(new ValidationPipe())
@@ -58,5 +112,5 @@ export class RatingsController {
     return this.ratingsService.getRating(transactionId, transactionType, token);
   }
 
-  
+
 }

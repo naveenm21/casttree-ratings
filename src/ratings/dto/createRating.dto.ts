@@ -2,6 +2,7 @@ import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-valid
 import { EtransactionType } from "../enum/transactionType.enum";
 
 export class createRatingsDto {
+    
     @IsNotEmpty()
     @IsString()
     sourceId: string;

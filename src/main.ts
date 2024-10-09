@@ -22,10 +22,10 @@ async function bootstrap() {
     .setTitle('Ratings microservice')
     .setDescription('rating microservice API documentation')
     .setVersion('1.0')
-    .addTag('Ratings')
+    .addTag('Ratings').addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('casttree-ratings/api', app, document);
   app.use(helmet());
   app.use(bodyParser.json({ limit: "50mb" }));
   app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
