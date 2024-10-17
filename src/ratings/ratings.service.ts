@@ -22,7 +22,6 @@ export class RatingsService {
             const oldRating = await this.ratingModel.findOne({
                 sourceType: body.sourceType, sourceId: body.sourceId
             });
-
             body.reviewedBy = token.id;
             body.status = EratingStatus.active;
             const newRating = new this.ratingModel(body)
@@ -44,14 +43,12 @@ export class RatingsService {
                 const oldAggregated: any = await this.aggregatedModel.findOne({
                     sourceId: body.sourceId
                 });
-
                 const oldAverage = oldAggregated.averageOverallRating;
                 const oldCount = oldAggregated.totalReviewNumber;
                 const newAverage = (oldAverage + body.overAllRating);
                 const newFinalAverage = (newAverage / (oldCount + 1)).toFixed(1);
-
-
-                return this.aggregatedModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1), finalAverageRating: newFinalAverage });
+                const updateAggregated = await this.aggregatedModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1), finalAverageRating: newFinalAverage });
+                return { message: "success" };
             }
         } catch (err) {
             throw err;
@@ -73,33 +70,37 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-            console.log(aggregated);
-            const profileInfo = await this.helperService.getProfileById(
-                [aggregated.sourceId],
-                accessToken,
-                null
-            );
-            aggregated["profileData"] = profileInfo[0];
-            const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
-            const allProfileInfo = await this.helperService.getProfileById(
-                reviewerUserIds,
-                accessToken,
-                null
-            );
+       
+            if (aggregated != null) {
+                const profileInfo = await this.helperService.getProfileById(
+                    [aggregated.sourceId],
+                    accessToken,
+                    null
+                );
 
-            var userProfileInfo = allProfileInfo.reduce((a, c) => {
-                a[c.userId] = c;
-                return a;
-            }, {});
-            console.log(userProfileInfo);
-            for (let i = 0; i < allReviews.length; i++) {
-                allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
+                aggregated["profileData"] = profileInfo[0];
+                const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
+                const allProfileInfo = await this.helperService.getProfileById(
+                    reviewerUserIds,
+                    accessToken,
+                    null
+                );
+
+                var userProfileInfo = allProfileInfo.reduce((a, c) => {
+                    a[c.userId] = c;
+                    return a;
+                }, {});
+
+                for (let i = 0; i < allReviews.length; i++) {
+                    allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
+                }
             }
-
-            let final_response: { [key: string]: string } = {
+            let final_response = {
                 "aggregated": aggregated,
                 "reviews": allReviews,
             };
+
+
             return { data: final_response, count: count };
         } catch (err) {
             throw err;
@@ -113,22 +114,25 @@ export class RatingsService {
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).skip(skip)
                 .limit(limit).lean();
-            const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-            const allProfileInfo = await this.helperService.getProfileById(
-                reviewerUserIds,
-                accessToken,
-                null
-            );
-            var userProfileInfo = allProfileInfo.reduce((a, c) => {
-                a[c.userId] = c;
-                return a;
-            }, {});
+            if (allReviews != null) {
+                const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
 
-            for (let i = 0; i < allReviews.length; i++) {
-                allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
+                const allProfileInfo = await this.helperService.getProfileById(
+                    reviewerUserIds,
+                    accessToken,
+                    null
+                );
+                var userProfileInfo = allProfileInfo.reduce((a, c) => {
+                    a[c.userId] = c;
+                    return a;
+                }, {});
+
+                for (let i = 0; i < allReviews.length; i++) {
+                    allReviews[i]["profileData"] = userProfileInfo[allReviews[i]["reviewedBy"]]
+                }
             }
             return { data: allReviews, count: count };
         } catch (err) {
