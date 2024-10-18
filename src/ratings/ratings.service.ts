@@ -71,9 +71,9 @@ export class RatingsService {
                 sourceId: sourceId, sourceType: sourceType
             });
        
-            if (aggregated != null) {
+            if (aggregated !=null) {
                 const profileInfo = await this.helperService.getProfileById(
-                    [aggregated.sourceId],
+                    [aggregated?.sourceId],
                     accessToken,
                     null
                 );
