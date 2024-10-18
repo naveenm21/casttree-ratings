@@ -52,7 +52,7 @@ export const ratingSchema = new mongoose.Schema<any>({
 
   sourceType: {
     type: String,
-    default: EsourceType
+    default: EsourceType.item
   },
   transactionId: {
     type: String
@@ -60,7 +60,7 @@ export const ratingSchema = new mongoose.Schema<any>({
 
   transactionType: {
     type: String,
-    default: EtransactionType
+    default: EtransactionType.serviceRequest
   },
 
   overAllRating: {
@@ -99,6 +99,7 @@ export const ratingAggregatedSchema = new mongoose.Schema<any>({
 
   sourceType: {
     type: String,
+    default: EsourceType.item
   },
 
   scale: {
