@@ -59,7 +59,7 @@ export class RatingsService {
 
 
     async getReviewSummary(sourceType: string, sourceId: string, accessToken?: string) {
-        console.log(sourceId, sourceType);
+   
         try {
             let allReviews: any = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
@@ -118,6 +118,7 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
+      
             if (allReviews.length != 0 ) {
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
 

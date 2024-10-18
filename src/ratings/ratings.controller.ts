@@ -97,7 +97,7 @@ export class RatingsController {
     @Body(new ValidationPipe({ whitelist: true })) body: any) {
     try {
       let data: any = await this.ratingsService.getRatingsAggregateList(body);
-      console.log(data);
+  
       return data;
 
     } catch (err) {
