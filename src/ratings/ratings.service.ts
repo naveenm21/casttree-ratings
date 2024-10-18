@@ -9,6 +9,7 @@ import { UserToken } from 'src/auth/dto/usertoken.dto';
 import { EratingStatus, ESratingStatus } from './enum/rating_status.enum';
 
 
+
 @Injectable()
 export class RatingsService {
     constructor(
@@ -110,14 +111,14 @@ export class RatingsService {
 
     async getAllReviews(sourceType: string, sourceId: string, skip: number, limit: number, accessToken) {
         try {
-            const allReviews: any = await this.ratingModel.find({
+            const allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).skip(skip)
                 .limit(limit).lean();
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-            if (allReviews != null) {
+            if (allReviews.length != 0 ) {
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
 
                 const allProfileInfo = await this.helperService.getProfileById(
