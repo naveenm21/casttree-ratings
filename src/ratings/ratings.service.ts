@@ -10,6 +10,7 @@ import { EratingStatus, ESratingStatus } from './enum/rating_status.enum';
 
 
 
+
 @Injectable()
 export class RatingsService {
     constructor(
@@ -41,12 +42,12 @@ export class RatingsService {
                 return { message: "success" };
             }
             else {
-                const oldAggregated: any = await this.aggregatedModel.findOne({
+                const oldAggregated = await this.aggregatedModel.findOne({
                     sourceId: body.sourceId
                 });
                 const oldAverage = oldAggregated.averageOverallRating;
                 const oldCount = oldAggregated.totalReviewNumber;
-                const newAverage = (oldAverage + body.overAllRating);
+                const newAverage = oldAverage + body.overAllRating;
                 const newFinalAverage = (newAverage / (oldCount + 1)).toFixed(1);
                 const updateAggregated = await this.aggregatedModel.findOneAndUpdate({ sourceId: body.sourceId }, { averageOverallRating: newAverage, totalReviewNumber: (oldCount + 1), finalAverageRating: newFinalAverage });
                 return { message: "success" };
@@ -61,11 +62,11 @@ export class RatingsService {
     async getReviewSummary(sourceType: string, sourceId: string, accessToken?: string) {
    
         try {
-            let allReviews: any = await this.ratingModel.find({
+            let allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).limit(10)
                 .lean();
-            let aggregated: any = await this.aggregatedModel.findOne({
+            let aggregated = await this.aggregatedModel.findOne({
                 sourceId: sourceId, sourceType: sourceType
             }).lean();
             const count = await this.ratingModel.countDocuments({
@@ -147,7 +148,7 @@ export class RatingsService {
     async getRatingsAggregateList(body) {
         try {
             let aggregation_pipeline = [];
-            let filter: any = {};
+            let filter ;
             if (body.sourceIds) {
                 let sourceIds = body.sourceIds.map((e) => e);
                 filter = { sourceId: { $in: sourceIds } };

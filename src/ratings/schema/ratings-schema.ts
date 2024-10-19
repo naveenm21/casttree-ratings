@@ -37,13 +37,13 @@ export interface ratingsAggregated {
 
   sourceType: string;
 
-  finalAverageRating: Number;
+  finalAverageRating: number;
 
-  averageOverallRating: Number;
+  averageOverallRating: number;
 
-  scale: Number;
+  scale: number;
 
-  totalReviewNumber: Number;
+  totalReviewNumber: number;
 }
 export const ratingSchema = new mongoose.Schema<any>({
   sourceId: {
