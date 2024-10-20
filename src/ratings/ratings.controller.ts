@@ -6,6 +6,7 @@ import { GetToken } from 'src/shared/decorator/getuser.decorator';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
 import { EtransactionType } from './enum/transactionType.enum';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { filterDto } from './dto/filter.dto';
 
 
 @Controller('ratings')
@@ -94,10 +95,10 @@ export class RatingsController {
   @UseGuards(JwtAuthGuard)
   @Post("get-aggregate-list")
   async getRatingsAggregateList(
-    @Body(new ValidationPipe({ whitelist: true })) body: any) {
+    @Body(new ValidationPipe({ whitelist: true })) body: filterDto) {
     try {
-      let data: any = await this.ratingsService.getRatingsAggregateList(body);
-      console.log(data);
+      let data = await this.ratingsService.getRatingsAggregateList(body);
+  
       return data;
 
     } catch (err) {

@@ -1,5 +1,8 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
+import { EtransactionType } from "../enum/transactionType.enum";
+import { EsourceType } from "../enum/sourceType.enum";
+import { EratingStatus } from "../enum/rating_status.enum";
 export interface ratings {
 
   sourceId: string;
@@ -34,13 +37,13 @@ export interface ratingsAggregated {
 
   sourceType: string;
 
-  finalAverageRating: Number;
+  finalAverageRating: number;
 
-  averageOverallRating: Number;
+  averageOverallRating: number;
 
-  scale: Number;
+  scale: number;
 
-  totalReviewNumber: Number;
+  totalReviewNumber: number;
 }
 export const ratingSchema = new mongoose.Schema<any>({
   sourceId: {
@@ -49,13 +52,15 @@ export const ratingSchema = new mongoose.Schema<any>({
 
   sourceType: {
     type: String,
+    default: EsourceType.item
   },
   transactionId: {
     type: String
   },
 
   transactionType: {
-    type: String
+    type: String,
+    default: EtransactionType.serviceRequest
   },
 
   overAllRating: {
@@ -69,6 +74,7 @@ export const ratingSchema = new mongoose.Schema<any>({
   },
   status: {
     type: String,
+    default: EratingStatus.active
   },
   reviewedBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -93,6 +99,7 @@ export const ratingAggregatedSchema = new mongoose.Schema<any>({
 
   sourceType: {
     type: String,
+    default: EsourceType.item
   },
 
   scale: {
