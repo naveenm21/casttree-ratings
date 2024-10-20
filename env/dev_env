@@ -1,0 +1,31 @@
+NODE_ENV = "development"
+SERVER_PORT = 3200
+API_PREFIX = "casttree-ratings"
+CORS_ORIGIN = "*"
+
+DB_URL = "mongodb+srv://dbAdmin:umP6QgRUxgPkK7kd@tecxprt.qbxr7.mongodb.net/tecxprt"
+
+#LOGGER
+LOGGER_LEVEL = "debug"
+LOGGER_CONSOLE = false
+LOGGER_FILE = true
+LOGGER_APP_LOG_PATH = "logs/app.log"
+LOGGER_ERR_LOG_PATH = "logs/error.log"
+
+#JWT
+JWT_SECRET = "SXUN#*DKJFDGF&#EF"
+JWT_EXPIRATION = "1d"
+
+
+#ENCRYPT AND DECRYPT KEY
+ENCRYPT_KEY = "Tecxprt-Enterprises"
+
+
+THROTTLE_LIMIT= "10000"
+THROTTLE_TTL= "30"
+
+CASTTREE_BASE_URL = "https://esearchprod.casttree.com/casttree"
+
+CORS_ALLOWED_ORIGIN = ["https://casttree-web-demo.web.app", "http://localhost:3000"]
+CORS_ALLOWED_HEADERS = "Origin,X-Requested-With,Authorization,Accept,Content-Type,Referer,Sec-Ch-Ua,Sec-Ch-Ua-Mobile,Sec-Ch-Ua-Platform,User-Agent"
+CORS_ALLOWED_METHODS = "PUT,GET,POST,DELETE,OPTIONS,PATCH"
