@@ -59,7 +59,7 @@ export class RatingsService {
     }
 
 
-    async getReviewSummary(sourceType: string, sourceId: string, accessToken?: string) {
+    async getReviewSummary(sourceType: string, sourceId: string) {
    
         try {
             let allReviews = await this.ratingModel.find({
@@ -74,17 +74,17 @@ export class RatingsService {
             });
        
             if (aggregated !=null) {
-                const profileInfo = await this.helperService.getProfileById(
+                const profileInfo = await this.helperService.getProfileByIdTl(
                     [aggregated?.sourceId],
-                    accessToken,
+                 
                     null
                 );
 
                 aggregated["profileData"] = profileInfo[0];
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
-                const allProfileInfo = await this.helperService.getProfileById(
+                const allProfileInfo = await this.helperService.getProfileByIdTl(
                     reviewerUserIds,
-                    accessToken,
+                 
                     null
                 );
 
@@ -110,7 +110,7 @@ export class RatingsService {
 
     }
 
-    async getAllReviews(sourceType: string, sourceId: string, skip: number, limit: number, accessToken) {
+    async getAllReviews(sourceType: string, sourceId: string, skip: number, limit: number) {
         try {
             const allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
@@ -123,9 +123,9 @@ export class RatingsService {
             if (allReviews.length != 0 ) {
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
 
-                const allProfileInfo = await this.helperService.getProfileById(
+                const allProfileInfo = await this.helperService.getProfileByIdTl(
                     reviewerUserIds,
-                    accessToken,
+                 
                     null
                 );
                 var userProfileInfo = allProfileInfo.reduce((a, c) => {
