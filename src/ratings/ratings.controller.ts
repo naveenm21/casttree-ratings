@@ -75,24 +75,24 @@ export class RatingsController {
     return this.ratingsService.createRating(createratingdto, token);
   }
 
-  @UseGuards(JwtAuthGuard)
+
   @Get(':sourceType/:sourceId/aggregate')
   @UsePipes(new ValidationPipe())
   getUserAggregated(@Param('sourceType') sourceType: string, @Param('sourceId') sourceId: string, @Req() req) {
-    return this.ratingsService.getReviewSummary(sourceType, sourceId, req["headers"]["authorization"]);
+    return this.ratingsService.getReviewSummary(sourceType, sourceId);
   }
 
-  @UseGuards(JwtAuthGuard)
+
   @Get(':sourceType/:sourceId/allReviews')
   @UsePipes(new ValidationPipe())
   getAllReviews(@Param('sourceType') sourceType: string, @Param('sourceId') sourceId: string, @Query("skip", ParseIntPipe) skip: number,
     @Query("limit", ParseIntPipe) limit: number, @Req() req) {
     return this.ratingsService.getAllReviews(sourceType, sourceId, skip,
-      limit, req["headers"]["authorization"]);
+      limit);
   }
 
 
-  @UseGuards(JwtAuthGuard)
+
   @Post("get-aggregate-list")
   async getRatingsAggregateList(
     @Body(new ValidationPipe({ whitelist: true })) body: filterDto) {

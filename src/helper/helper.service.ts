@@ -21,17 +21,14 @@ export class HelperService {
     return reqHeaders;
   }
 
-  async getProfileById(userId: string[], accessToken: string, type: string) {
+  async getProfileByIdTl(userId: string[],  type: string) {
     try {
       let data = await this.http_service
         .post(
-          `${this.configService.get("CASTTREE_BASE_URL")}/profile/get-profile-list`,
+          `${this.configService.get("CASTTREE_BASE_URL")}/profile/tl/get-profile-list`,
+         // `http://localhost:3000/casttree/profile/tl/get-profile-list`,
           { userIds: userId, type: type },
-          {
-            headers: {
-              Authorization: accessToken,
-            },
-          }
+          
         )
         .toPromise();
       return data.data.profileData;
