@@ -1,19 +1,20 @@
-import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { EtransactionType } from "../enum/transactionType.enum";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 import { EsourceType } from "../enum/sourceType.enum";
-
-
 export class filterDto {
-    
     @IsNotEmpty()
-  
     sourceIds: string | string[];
 
     @IsNotEmpty()
     @IsString()
-    @IsEnum( EsourceType)
+    @IsEnum(EsourceType)
     sourceType: EsourceType;
+}
 
-   
+export class getServiceRequestRatingsDto {
+    @IsNotEmpty()
+    transactionIds: string | string[];
 
+    @IsNotEmpty()
+    @IsString()
+    userId: string ;
 }
