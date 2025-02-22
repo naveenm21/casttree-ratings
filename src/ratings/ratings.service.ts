@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ratingsAggregated, ratings } from './schema/ratings-schema';
-import { Model } from 'mongoose';
-import { createRatingsDto } from './dto/createRating.dto';
-import { ObjectId } from 'mongodb';
-import { HelperService } from 'src/helper/helper.service';
+import { Model, Types } from 'mongoose';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
-import { EratingStatus, ESratingStatus } from './enum/rating_status.enum';
+import { HelperService } from 'src/helper/helper.service';
+import { createRatingsDto } from './dto/createRating.dto';
+import { getServiceRequestRatingsDto } from './dto/filter.dto';
+import { EratingStatus } from './enum/rating_status.enum';
+import { ratings, ratingsAggregated } from './schema/ratings-schema';
 
 
 
@@ -60,7 +60,7 @@ export class RatingsService {
 
 
     async getReviewSummary(sourceType: string, sourceId: string) {
-   
+
         try {
             let allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
@@ -72,11 +72,11 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-       
-            if (aggregated !=null) {
+
+            if (aggregated != null) {
                 const profileInfo = await this.helperService.getProfileByIdTl(
                     [aggregated?.sourceId],
-                 
+
                     null
                 );
 
@@ -84,7 +84,7 @@ export class RatingsService {
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
                 const allProfileInfo = await this.helperService.getProfileByIdTl(
                     reviewerUserIds,
-                 
+
                     null
                 );
 
@@ -119,13 +119,13 @@ export class RatingsService {
             const count = await this.ratingModel.countDocuments({
                 sourceId: sourceId, sourceType: sourceType
             });
-      
-            if (allReviews.length != 0 ) {
+
+            if (allReviews.length != 0) {
                 const reviewerUserIds = allReviews.map((e) => e.reviewedBy);
 
                 const allProfileInfo = await this.helperService.getProfileByIdTl(
                     reviewerUserIds,
-                 
+
                     null
                 );
                 var userProfileInfo = allProfileInfo.reduce((a, c) => {
@@ -148,7 +148,7 @@ export class RatingsService {
     async getRatingsAggregateList(body) {
         try {
             let aggregation_pipeline = [];
-            let filter ;
+            let filter;
             if (body.sourceIds) {
                 let sourceIds = body.sourceIds.map((e) => e);
                 filter = { sourceId: { $in: sourceIds } };
@@ -198,5 +198,25 @@ export class RatingsService {
             transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
         });
         return ratingData;
+    }
+
+    async getServiceRequestRatings(body:getServiceRequestRatingsDto
+
+    ) {
+        try {
+            const objectIdUserId = new Types.ObjectId(body.userId);
+            let data = await this.ratingModel.aggregate([
+                {
+                    $match: {
+                        reviewedBy: objectIdUserId,
+                        transactionId: { $in: body.transactionIds }
+                    }
+                }
+            ]);
+            return data;
+        }
+        catch (err) {
+            throw err;
+        }
     }
 }

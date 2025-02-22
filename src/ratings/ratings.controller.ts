@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req, Res, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { createRatingsDto } from './dto/createRating.dto';
-import { RatingsService } from './ratings.service';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserToken } from 'src/auth/dto/usertoken.dto';
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { GetToken } from 'src/shared/decorator/getuser.decorator';
-import { UserToken } from 'src/auth/dto/usertoken.dto';
+import { createRatingsDto } from './dto/createRating.dto';
+import { filterDto, getServiceRequestRatingsDto } from './dto/filter.dto';
 import { EtransactionType } from './enum/transactionType.enum';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { filterDto } from './dto/filter.dto';
+import { RatingsService } from './ratings.service';
 
 
 @Controller('ratings')
@@ -98,7 +98,7 @@ export class RatingsController {
     @Body(new ValidationPipe({ whitelist: true })) body: filterDto) {
     try {
       let data = await this.ratingsService.getRatingsAggregateList(body);
-  
+
       return data;
 
     } catch (err) {
@@ -111,6 +111,18 @@ export class RatingsController {
   @UsePipes(new ValidationPipe())
   getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: EtransactionType, @Req() req, @GetToken() token: UserToken) {
     return this.ratingsService.getRating(transactionId, transactionType, token);
+  }
+
+  @Post("get-serviceRequest-ratings")
+  async getServiceRequestRatings(
+    @Body(new ValidationPipe({ whitelist: true })) body: getServiceRequestRatingsDto
+  ) {
+    try {
+      let data = await this.ratingsService.getServiceRequestRatings(body);
+      return data;
+    }
+    catch (err) {
+    }
   }
 
 
