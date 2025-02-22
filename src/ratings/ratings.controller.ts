@@ -118,7 +118,7 @@ export class RatingsController {
     @Body(new ValidationPipe({ whitelist: true })) body: getServiceRequestRatingsDto
   ) {
     try {
-      let data = await this.ratingsService.getServiceRequestRatings(body.transactionIds,body.userId);
+      let data = await this.ratingsService.getServiceRequestRatings(body);
       return data;
     }
     catch (err) {

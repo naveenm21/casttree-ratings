@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { UserToken } from 'src/auth/dto/usertoken.dto';
 import { HelperService } from 'src/helper/helper.service';
 import { createRatingsDto } from './dto/createRating.dto';
+import { getServiceRequestRatingsDto } from './dto/filter.dto';
 import { EratingStatus } from './enum/rating_status.enum';
 import { ratings, ratingsAggregated } from './schema/ratings-schema';
 
@@ -199,14 +200,16 @@ export class RatingsService {
         return ratingData;
     }
 
-    async getServiceRequestRatings(transactionIds, userId) {
+    async getServiceRequestRatings(body:getServiceRequestRatingsDto
+
+    ) {
         try {
-            const objectIdUserId = new Types.ObjectId(userId);
+            const objectIdUserId = new Types.ObjectId(body.userId);
             let data = await this.ratingModel.aggregate([
                 {
                     $match: {
                         reviewedBy: objectIdUserId,
-                        transactionId: { $in: transactionIds }
+                        transactionId: { $in: body.transactionIds }
                     }
                 }
             ]);
