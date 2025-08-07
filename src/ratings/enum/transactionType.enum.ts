@@ -1,10 +1,11 @@
 export enum EtransactionType {
   
     serviceRequest = "serviceRequest",
-    processInstance = "processInstance"
-  
+    processInstance = "processInstance",
+    userBooking = "userBooking"
   }
 export const EStransactionType = [
     EtransactionType.serviceRequest,
-    EtransactionType.processInstance
+    EtransactionType.processInstance,
+    EtransactionType.userBooking
 ];
