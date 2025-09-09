@@ -63,14 +63,17 @@ export class RatingsService {
 
         try {
             let allReviews = await this.ratingModel.find({
-                sourceId: sourceId, sourceType: sourceType
+                sourceId: sourceId, sourceType: sourceType,
+                status : EratingStatus.active
             }).sort({ _id: -1 }).limit(10)
                 .lean();
             let aggregated = await this.aggregatedModel.findOne({
-                sourceId: sourceId, sourceType: sourceType
+                sourceId: sourceId, sourceType: sourceType,
+                // status : EratingStatus.active
             }).lean();
             const count = await this.ratingModel.countDocuments({
-                sourceId: sourceId, sourceType: sourceType
+                sourceId: sourceId, sourceType: sourceType,
+                // status : EratingStatus.active
             });
 
             if (aggregated != null) {
@@ -113,11 +116,13 @@ export class RatingsService {
     async getAllReviews(sourceType: string, sourceId: string, skip: number, limit: number) {
         try {
             const allReviews = await this.ratingModel.find({
-                sourceId: sourceId, sourceType: sourceType
+                sourceId: sourceId, sourceType: sourceType,
+                // status : EratingStatus.active
             }).sort({ _id: -1 }).skip(skip)
                 .limit(limit).lean();
             const count = await this.ratingModel.countDocuments({
-                sourceId: sourceId, sourceType: sourceType
+                sourceId: sourceId, sourceType: sourceType,
+                // status : EratingStatus.active
             });
 
             if (allReviews.length != 0) {
