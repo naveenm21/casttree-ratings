@@ -7,9 +7,7 @@ import { createRatingsDto } from './dto/createRating.dto';
 import { getServiceRequestRatingsDto } from './dto/filter.dto';
 import { EratingStatus } from './enum/rating_status.enum';
 import { ratings, ratingsAggregated } from './schema/ratings-schema';
-
-
-
+import * as Sentry from "@sentry/nestjs";
 
 @Injectable()
 export class RatingsService {
@@ -21,6 +19,10 @@ export class RatingsService {
 
     async createRating(body: createRatingsDto, token: UserToken) {
         try {
+            Sentry.addBreadcrumb({
+                message: "createRating",
+                data: body
+            });
             const oldRating = await this.ratingModel.findOne({
                 sourceType: body.sourceType, sourceId: body.sourceId
             });
@@ -58,10 +60,13 @@ export class RatingsService {
 
     }
 
-
     async getReviewSummary(sourceType: string, sourceId: string) {
 
         try {
+            Sentry.addBreadcrumb({
+                message: "getReviewSummary",
+                data: { sourceType, sourceId }
+            });
             let allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).limit(10)
@@ -112,6 +117,10 @@ export class RatingsService {
 
     async getAllReviews(sourceType: string, sourceId: string, skip: number, limit: number) {
         try {
+            Sentry.addBreadcrumb({
+                message: "getAllReviews",
+                data: { sourceType, sourceId, skip, limit }
+            });
             const allReviews = await this.ratingModel.find({
                 sourceId: sourceId, sourceType: sourceType
             }).sort({ _id: -1 }).skip(skip)
@@ -144,9 +153,12 @@ export class RatingsService {
 
     }
 
-
     async getRatingsAggregateList(body) {
         try {
+            Sentry.addBreadcrumb({
+                message: "getRatingsAggregateList",
+                data: body
+            });
             let aggregation_pipeline = [];
             let filter;
             if (body.sourceIds) {
@@ -194,16 +206,26 @@ export class RatingsService {
     }
 
     async getRating(transactionId, transactionType, token: UserToken) {
-        const ratingData = await this.ratingModel.findOne({
-            transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
-        });
-        return ratingData;
+        try {
+            Sentry.addBreadcrumb({
+                message: "getRating",
+                data: { transactionId, transactionType, token }
+            });
+            const ratingData = await this.ratingModel.findOne({
+                transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
+            });
+            return ratingData;
+        } catch (err) {
+            throw err;
+        }
     }
 
-    async getServiceRequestRatings(body:getServiceRequestRatingsDto
-
-    ) {
+    async getServiceRequestRatings(body:getServiceRequestRatingsDto) {
         try {
+            Sentry.addBreadcrumb({
+                message: "getServiceRequestRatings",
+                data: body
+            });
             const objectIdUserId = new Types.ObjectId(body.userId);
             let data = await this.ratingModel.aggregate([
                 {

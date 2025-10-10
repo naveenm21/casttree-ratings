@@ -47,3 +47,6 @@ CASTTREE_BASE_URL = "https://prodapi.casttree.com/casttree"
 CORS_ALLOWED_ORIGIN = ["https://casttree.com", "https://www.casttree.com", "https://prodapi.casttree.com"]
 CORS_ALLOWED_HEADERS = "Origin,X-Requested-With,Authorization,Accept,Content-Type,Referer,Sec-Ch-Ua,Sec-Ch-Ua-Mobile,Sec-Ch-Ua-Platform,User-Agent"
 CORS_ALLOWED_METHODS = "PUT,GET,POST,DELETE,OPTIONS,PATCH"
+
+# SENTRY
+SENTRY_DSN = "https://ff3a54b58be984bbc85d43d52c1430f2@o4510158333149184.ingest.de.sentry.io/4510160795926608"
