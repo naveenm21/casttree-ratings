@@ -241,4 +241,16 @@ export class RatingsService {
             throw err;
         }
     }
+    async getUserRatings(token: UserToken) {
+        try {
+            Sentry.addBreadcrumb({
+                message: "getUserRatings",
+                data: token
+            });
+            let data = await this.ratingModel.find({ reviewedBy:new Types.ObjectId(token.id), overAllRating: 5 });
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

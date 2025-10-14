@@ -136,6 +136,15 @@ export class RatingsController {
       throw err;
     }
   }
-
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getUserRatings(@GetToken() token: UserToken) {
+    try {
+      let data = await this.ratingsService.getUserRatings(token);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 }
