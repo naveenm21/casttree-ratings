@@ -31,4 +31,4 @@ CORS_ALLOWED_HEADERS = "Origin,X-Requested-With,Authorization,Accept,Content-Typ
 CORS_ALLOWED_METHODS = "PUT,GET,POST,DELETE,OPTIONS,PATCH"
 
 # SENTRY
-SENTRY_DSN = "https://ff3a54b58be984bbc85d43d52c1430f2@o4510158333149184.ingest.de.sentry.io/4510160795926608"
+SENTRY_DSN = "https://0e9e548f601057d25e7c2b2a7a89b623@sentry-dev.casttree.in/8"
