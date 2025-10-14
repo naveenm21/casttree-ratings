@@ -61,10 +61,8 @@ export class AllExceptionFilter implements ExceptionFilter {
 
       // Now capture the exception with all the context
       Sentry.captureException(exception);
-
-      response.status(status).json(exception);
     });
 
-    return response.status(status).json(exception);
+    response.status(status).json(exception);
   }
 }
