@@ -71,15 +71,22 @@ export class RatingsController {
   })
   @Post()
   createRating(@Body(new ValidationPipe({ whitelist: true })) createratingdto: createRatingsDto, @GetToken() token: UserToken,) {
-
-    return this.ratingsService.createRating(createratingdto, token);
+    try {
+      return this.ratingsService.createRating(createratingdto, token);
+    } catch (err) {
+      throw err;
+    }
   }
 
 
   @Get(':sourceType/:sourceId/aggregate')
   @UsePipes(new ValidationPipe())
   getUserAggregated(@Param('sourceType') sourceType: string, @Param('sourceId') sourceId: string, @Req() req) {
-    return this.ratingsService.getReviewSummary(sourceType, sourceId);
+    try {
+      return this.ratingsService.getReviewSummary(sourceType, sourceId);
+    } catch (err) {
+      throw err;
+    }
   }
 
 
@@ -87,8 +94,11 @@ export class RatingsController {
   @UsePipes(new ValidationPipe())
   getAllReviews(@Param('sourceType') sourceType: string, @Param('sourceId') sourceId: string, @Query("skip", ParseIntPipe) skip: number,
     @Query("limit", ParseIntPipe) limit: number, @Req() req) {
-    return this.ratingsService.getAllReviews(sourceType, sourceId, skip,
-      limit);
+    try {
+      return this.ratingsService.getAllReviews(sourceType, sourceId, skip, limit);
+    } catch (err) {
+      throw err;
+    }
   }
 
 
@@ -98,9 +108,7 @@ export class RatingsController {
     @Body(new ValidationPipe({ whitelist: true })) body: filterDto) {
     try {
       let data = await this.ratingsService.getRatingsAggregateList(body);
-
       return data;
-
     } catch (err) {
       throw err;
     }
@@ -110,7 +118,11 @@ export class RatingsController {
   @Get(':transactionId/:transactionType')
   @UsePipes(new ValidationPipe())
   getUserRatingData(@Param('transactionId') transactionId: string, @Param('transactionType') transactionType: EtransactionType, @Req() req, @GetToken() token: UserToken) {
-    return this.ratingsService.getRating(transactionId, transactionType, token);
+    try {
+      return this.ratingsService.getRating(transactionId, transactionType, token);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Post("get-serviceRequest-ratings")
@@ -122,6 +134,7 @@ export class RatingsController {
       return data;
     }
     catch (err) {
+      throw err;
     }
   }
   @UseGuards(JwtAuthGuard)

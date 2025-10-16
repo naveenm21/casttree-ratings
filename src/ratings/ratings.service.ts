@@ -199,10 +199,14 @@ export class RatingsService {
     }
 
     async getRating(transactionId, transactionType, token: UserToken) {
-        const ratingData = await this.ratingModel.findOne({
+        try {
+            const ratingData = await this.ratingModel.findOne({
             transactionId: transactionId, transactionType: transactionType, reviewedBy: token.id
-        });
-        return ratingData;
+            });
+            return ratingData;
+        } catch (err) {
+            throw err;
+        }
     }
 
     async getServiceRequestRatings(body:getServiceRequestRatingsDto
